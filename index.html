@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faheem Abdullah | Multilingual AI 3D Website</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;overflow:hidden;background:#000;color:#fff;font-family:sans-serif}
+canvas{display:block}
+
+.overlay{
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:10;
+  width:90%;
+}
+
+.overlay h1{
+  font-size:45px;
+  color:#00f7ff;
+  font-family:Orbitron;
+}
+
+.btn{
+  margin-top:15px;
+  padding:12px 20px;
+  background:linear-gradient(90deg,#00f7ff,#8b5cf6);
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  text-decoration:none;
+  color:black;
+  display:inline-block;
+}
+
+.whatsapp{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#25d366;
+  padding:15px;
+  border-radius:50%;
+  z-index:20;
+}
+
+.chat-btn{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  background:#8b5cf6;
+  padding:12px;
+  border-radius:50%;
+  cursor:pointer;
+  z-index:20;
+}
+
+.chat-box{
+  position:fixed;
+  bottom:80px;
+  left:20px;
+  width:280px;
+  height:340px;
+  background:#111;
+  display:none;
+  flex-direction:column;
+  border-radius:10px;
+  overflow:hidden;
+  z-index:20;
+}
+
+.chat-header{background:#8b5cf6;padding:10px}
+.chat-msg{flex:1;padding:10px;font-size:12px;overflow:auto}
+.chat-input{display:flex}
+.chat-input input{flex:1;padding:8px;border:none}
+.chat-input button{background:#00f7ff;border:none;padding:8px;cursor:pointer}
+
+.profile{
+  position:absolute;
+  top:15%;
+  left:20px;
+  width:280px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(10px);
+  padding:15px;
+  border-radius:12px;
+  z-index:10;
+  font-size:13px;
+}
+
+.profile h3{color:#00f7ff}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+  <h1>MULTILINGUAL AI 3D</h1>
+  <p>Urdu • English • Hindi AI 🤖</p>
+  <a class="btn" href="https://wa.me/923268728400">Hire Me</a>
+</div>
+
+<div class="profile">
+  <h3>About</h3>
+  <p>Faheem Abdullah - AI Web Developer</p>
+
+  <h3>AI Feature</h3>
+  <p>Speak in Urdu, English or Hindi → AI replies in same language</p>
+
+  <h3>Contact</h3>
+  <p>Email: Abdullahfahee610@gmail.com</p>
+  <p>Phone: +92 326 8728400</p>
+
+  <h3>Price</h3>
+  <p>$50 - $250+</p>
+</div>
+
+<a class="whatsapp" href="https://wa.me/923268728400">💬</a>
+
+<div class="chat-btn" onclick="toggleChat()">🤖</div>
+
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">Multilingual AI 🔊</div>
+  <div class="chat-msg" id="msg"></div>
+  <div class="chat-input">
+    <input id="input">
+    <button onclick="send()">Send</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// 3D
+let scene=new THREE.Scene();
+let camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+let renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+let geo=new THREE.TorusKnotGeometry(1,0.3,100,16);
+let mat=new THREE.MeshStandardMaterial({color:0x00f7ff});
+let obj=new THREE.Mesh(geo,mat);
+scene.add(obj);
+
+scene.add(new THREE.PointLight(0xffffff,1).position.set(5,5,5));
+scene.add(new THREE.AmbientLight(0x404040));
+camera.position.z=4;
+
+function animate(){
+requestAnimationFrame(animate);
+obj.rotation.x+=0.01;
+obj.rotation.y+=0.01;
+renderer.render(scene,camera);
+}
+animate();
+
+// CHAT
+function toggleChat(){
+let box=document.getElementById('chatBox');
+box.style.display=box.style.display==='flex'?'none':'flex';
+box.style.flexDirection='column';
+}
+
+// LANGUAGE DETECT (simple)
+function detectLang(text){
+if(/[\u0600-\u06FF]/.test(text)) return 'ur-PK';
+if(/[a-zA-Z]/.test(text)) return 'en-US';
+return 'hi-IN';
+}
+
+// VOICE SPEAK
+function speak(text,lang){
+let s=new SpeechSynthesisUtterance(text);
+s.lang=lang;
+window.speechSynthesis.speak(s);
+}
+
+// 🔥 REAL AI PLACEHOLDER (OpenAI ready)
+async function getAI(msg){
+
+// 👉 REAL OPENAI API YAHAN CONNECT HOGA
+/*
+const res = await fetch("https://api.openai.com/v1/chat/completions",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer YOUR_API_KEY"
+},
+body:JSON.stringify({
+model:"gpt-4o-mini",
+messages:[{role:"user",content:msg}]
+})
+});
+const data = await res.json();
+return data.choices[0].message.content;
+*/
+
+// fallback smart reply
+if(msg.toLowerCase().includes('price')) return 'Price starts from $50 💰';
+if(msg.toLowerCase().includes('hello')) return 'Hello! I am your multilingual AI 🤖';
+return 'Main AI hoon, API connect nahi hai abhi 🚀';
+}
+
+async function send(){
+let input=document.getElementById('input');
+let msg=document.getElementById('msg');
+
+let text=input.value;
+let lang=detectLang(text);
+
+msg.innerHTML+="You: "+text+"<br>";
+
+let reply=await getAI(text);
+
+msg.innerHTML+="AI: "+reply+"<br>";
+msg.scrollTop=msg.scrollHeight;
+
+// 🔊 voice reply
+speak(reply,lang);
+
+input.value="";
+}
+</script>
+
+</body>
+</html>
